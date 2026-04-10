@@ -7,6 +7,9 @@ import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { AuthMember } from '../auth/decorators/authMember.decorator';
 import { ObjectId } from 'mongoose';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { MemberType } from '../../libs/enums/member.enum';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 
 @Resolver()
@@ -55,6 +58,16 @@ export class MemberResolver {
         
         return `Hi ${memberNick}`;
     }
+    @Roles(MemberType.USER, MemberType.AGENT)
+    @UseGuards(RolesGuard)
+    @Query(() => String)
+    public async checkAuthRoles(@AuthMember() authmember:Member): Promise<string> {
+        console.log("Mutation updateMember:");
+        console.log('authmember => ', authmember )
+        
+        return `Hi ${authmember.memberNick}, you are ${authmember.memberType}`;
+    }
+
 
 
     @Query(() => String)
@@ -68,9 +81,12 @@ export class MemberResolver {
 
     //** ADMIN */
     //** AUTHORIZATION: Admin */
+    @Roles(MemberType.ADMIN)
+    @UseGuards(RolesGuard)
     @Mutation(()=> String)
-    public async getAllMembersByAdmin(): Promise<string> {
+    public async getAllMembersByAdmin(@AuthMember() authMember: Member): Promise<string> {
 
+        console.log("authMember", authMember.memberNick);
         return this.memberService.getAllMembersByAdmin();
     }
 
