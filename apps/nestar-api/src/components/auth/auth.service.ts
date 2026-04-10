@@ -3,9 +3,10 @@ import * as bcrypt from "bcryptjs";
 import { T } from '../../libs/types/common';
 import { Member } from '../../libs/dto/member/member';
 import { JwtService } from '@nestjs/jwt';
+import { shapeIntoMongoObjectId } from '../../libs/config';
 @Injectable()
 export class AuthService {
-    constructor(private jwtservice: JwtService) {}
+    constructor(private jwtService: JwtService) {}
 
     public async hashPassword(memberPassword: string): Promise<string> {
         const salt = await bcrypt.genSalt()
@@ -25,12 +26,12 @@ export class AuthService {
 		});
         delete payload.memberPassword;
         // console.log("payload", payload)
-        return await this.jwtservice.signAsync(payload);
+        return await this.jwtService.signAsync(payload);
     }
 
-    public async verifyToken(token: string): Promise<Member> {
-        const member = this.jwtservice.verifyAsync(token);
-
-        return member;
-    }
+   public async verifyToken(token: string): Promise<Member> {
+		const member = await this.jwtService.verifyAsync(token);
+		member._id = shapeIntoMongoObjectId(member._id);
+		return member;
+	}
 }
