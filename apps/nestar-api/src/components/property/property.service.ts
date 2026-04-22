@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId } from 'mongoose';
+import { Model, ObjectId, Schema } from 'mongoose';
 import { Properties, Property } from '../../libs/dto/property/property';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import {
@@ -260,7 +260,7 @@ export class PropertyService {
 	public async propertyStatsEditor(input: StatisticModifier): Promise<Property> {
 		const { _id, targetKey, modifier } = input;
 		return await this.propertyModel
-			.findOneAndUpdate(
+			.findByIdAndUpdate(
 				_id,
 				{ $inc: { [targetKey]: modifier } },
 				{

@@ -187,7 +187,7 @@ export class BoardArticleService {
 		console.log('Executed => ');
 		const { _id, targetKey, modifier } = input;
 		return await this.boardArticleModel
-			.findOneAndUpdate(
+			.findByIdAndUpdate(
 				_id,
 				{
 					$inc: { [targetKey]: modifier },
