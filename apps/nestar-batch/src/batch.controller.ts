@@ -25,22 +25,22 @@ export class BatchController {
 	}
 
 	@Cron('20 * * * * *', { name: BATCH_TOP_PROPERTIES })
-	public async batchProperties() {
+	public async batchTopProperties() {
 		try {
 			this.logger['context'] = BATCH_TOP_PROPERTIES;
 			this.logger.debug('EXECUTED!');
-			await this.batchService.batchProperties();
+			await this.batchService.batchTopProperties();
 		} catch (err) {
 			this.logger.error(err);
 		}
 	}
 
 	@Cron('40 * * * * *', { name: BATCH_TOP_AGENTS })
-	public async batchAgents() {
+	public async batchTopAgents() {
 		try {
 			this.logger['context'] = BATCH_TOP_AGENTS;
 			this.logger.debug('EXECUTED!');
-			await this.batchService.batchAgents();
+			await this.batchService.batchTopAgents();
 		} catch (err) {
 			this.logger.error(err);
 		}
