@@ -52,7 +52,7 @@ export class SocketGateway implements OnGatewayInit {
 		const clientNick: string = authMember?.memberNick ?? 'Guest';
 		this.logger.verbose(`Connection [${clientNick}] & total: [${this.summuryClient}]`);
 		const infoMsg: InfoPayload = {
-			event: 'Info',
+			event: 'info',
 			totalClients: this.summuryClient,
 			memberData: authMember,
 			action: 'joined',
@@ -70,7 +70,7 @@ export class SocketGateway implements OnGatewayInit {
 		const clientNick: string = authMember?.memberNick ?? 'Guest';
 		this.logger.verbose(`DisConnection [${clientNick}] & total: [${this.summuryClient}]`);
 		const infoMsg: InfoPayload = {
-			event: 'Info',
+			event: 'info',
 			totalClients: this.summuryClient,
 			memberData: authMember,
 			action: 'left',
