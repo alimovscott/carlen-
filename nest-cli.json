@@ -1,31 +1,31 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/nestar-api/src",
+  "sourceRoot": "apps/carlen-api/src",
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/nestar-api/tsconfig.app.json"
+    "tsConfigPath": "apps/carlen-api/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/nestar-api",
+  "root": "apps/carlen-api",
   "projects": {
-    "nestar-api": {
+    "carlen-api": {
       "type": "application",
-      "root": "apps/nestar-api",
+      "root": "apps/carlen-api",
       "entryFile": "main",
-      "sourceRoot": "apps/nestar-api/src",
+      "sourceRoot": "apps/carlen-api/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/nestar-api/tsconfig.app.json"
+        "tsConfigPath": "apps/carlen-api/tsconfig.app.json"
       }
     },
-    "nestar-batch": {
+    "carlen-batch": {
       "type": "application",
-      "root": "apps/nestar-batch",
+      "root": "apps/carlen-batch",
       "entryFile": "main",
-      "sourceRoot": "apps/nestar-batch/src",
+      "sourceRoot": "apps/carlen-batch/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/nestar-batch/tsconfig.app.json"
+        "tsConfigPath": "apps/carlen-batch/tsconfig.app.json"
       }
     }
   }
