@@ -1,5 +1,41 @@
 # Completed Tasks
 
+## Product Migration Session Summary
+
+This session completed the backend catalog migration from `Property` to `Product` according to the approved Carlen product plan. `MemberType.USER`, `MemberType.AGENT`, and `MemberType.ADMIN` remain unchanged, and product ownership still uses `MemberType.AGENT`.
+
+## Product Migration Completed Refactors
+
+| Area | Completed Work |
+| --- | --- |
+| Catalog module | Replaced `property` module files with `product` resolver/service/module files. |
+| GraphQL catalog API | Exposed product-only operations such as `createProduct`, `getProduct`, `getProducts`, `getAgentProducts`, and `likeTargetProduct`. |
+| DTOs and inputs | Replaced property DTO/input/update classes with product equivalents and product fields. |
+| Enums | Added `ProductType`, `ProductTransmission`, `ProductStatus`, `ProductFuelType`, and `ProductLocation`. |
+| Mongo schema | Replaced `PropertySchema` with `ProductSchema` using collection `products`. |
+| Member counters | Renamed `memberProperties` to `memberProducts` in member schema/DTO and product count updates. |
+| Social modules | Updated like/view/comment/notification groups from `PROPERTY` to `PRODUCT`. |
+| Favorites/visited | Updated aggregation lookups to read from `products`. |
+| Batch ranking | Updated product rank and member rank calculations to use product fields and `memberProducts`. |
+| Migration script | Added `scripts/migrate-properties-to-products.ts` and `npm run migrate:properties-to-products`. |
+
+## Product Migration Validation Status
+
+| Check | Status | Notes |
+| --- | --- | --- |
+| API TypeScript no-emit | Passed | `npx tsc -p apps/carlen-api/tsconfig.app.json --noEmit`. |
+| Batch TypeScript no-emit | Passed | `npx tsc -p apps/carlen-batch/tsconfig.app.json --noEmit`. |
+| Full build | Passed | `npm run build`. |
+
+## Remaining Product Migration Work
+
+- Frontend GraphQL operations must be updated from property contracts to product contracts.
+- Existing Mongo `properties` data must be copied/enriched using the migration script when ready.
+- Old `PROPERTY` social history and old `memberProperties` persisted counters need a separate backfill if that data must be preserved.
+- Focused product API tests should be added beyond TypeScript/build validation.
+
+---
+
 ## Session Summary
 
 This session completed the safe Nestar to Carlen rename layer and documented the current migration strategy. No business-domain migration was performed.

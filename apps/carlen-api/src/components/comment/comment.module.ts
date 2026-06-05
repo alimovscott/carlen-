@@ -6,7 +6,7 @@ import { AuthModule } from '../auth/auth.module';
 import { MemberModule } from '../member/member.module';
 import { ViewModule } from '../view/view.module';
 import CommentSchema from '../../schemas/Comment.model';
-import { PropertyModule } from '../property/property.module';
+import { ProductModule } from '../product/product.module';
 import { BoardArticleModule } from '../board-article/board-article.module';
 
 @Module({
@@ -19,7 +19,7 @@ import { BoardArticleModule } from '../board-article/board-article.module';
 		]),
 		AuthModule,
 		MemberModule,
-		PropertyModule,
+		ProductModule,
 		BoardArticleModule,
 		ViewModule,
 	],

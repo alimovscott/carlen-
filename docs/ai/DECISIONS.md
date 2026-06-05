@@ -2,20 +2,17 @@
 
 | Decision | Why It Was Made | Risks | Alternatives |
 | --- | --- | --- | --- |
-| Start with a safe Nestar to Carlen rename layer. | Branding and app identity can be corrected without touching business logic. | Domain names such as `Property` and `Agent` still look like real estate. | Perform a full domain migration immediately, with higher risk and larger blast radius. |
-| Keep backend domain logic unchanged. | The request explicitly required no business logic changes. | Real estate terminology remains inside code and GraphQL contracts. | Rename services, DTOs, GraphQL types, and schema fields now. |
-| Keep GraphQL API names unchanged. | Preserves frontend and external client compatibility during the safe rename phase. | UI may say Carlen while API still says `Property`. | Introduce new GraphQL operations now and deprecate old ones. |
-| Keep Mongo collection names unchanged. | Avoids data migration risk and prevents collection lookup regressions. | Database contains carshop data in real estate-named collections. | Rename collections and write migration scripts. |
-| Rename app folders and Nest project IDs. | `apps/carlen-api` and `apps/carlen-batch` make the project identity visible and consistent. | Requires import, script, and build path updates. | Keep folders as `nestar-*` and only change package/messages. |
-| Change Mongo database path from `/Nestar` to `/Carlen`. | Aligns runtime database target with the Carlen brand. | This points the app at a different database name; old data is not automatically copied. | Keep `/Nestar` until a database migration is ready. |
-| Run non-mutating verification commands. | Avoids formatter or linter auto-fixes that would mix unrelated cleanup into the rename. | Existing lint debt remains. | Run `npm run lint` with `--fix` and accept broad formatting changes. |
-| Defer carshop schema conversion. | Vehicle/dealer fields require product decisions and GraphQL/data migration planning. | The codebase remains in a transitional state. | Convert `Property` to vehicle listing immediately. |
-| Treat frontend target name as Carlen. | Keeps frontend documentation consistent with the backend migration and app identity. | Any external naming plan would need separate docs later. | Document the frontend target under a different product name. |
+| Move from `Property` to `Product` as the catalog domain. | The Carlen backend is now a carshop platform and the approved plan required product-only catalog APIs. | Existing frontend clients using old `Property` operations must be updated. | Keep temporary GraphQL aliases for old operations. |
+| Keep `MemberType.USER`, `MemberType.AGENT`, and `MemberType.ADMIN` unchanged. | The migration explicitly preserves member roles and ownership semantics. | `AGENT` still represents product sellers/dealers, which may be renamed later. | Introduce a new dealer role in a separate role migration. |
+| Use `MemberType.AGENT` for product ownership. | Preserves existing authorization rules and minimizes auth blast radius. | Naming remains transitional. | Add `MemberType.DEALER`, requiring broader auth/data migration. |
+| Use Mongo collection `products`. | Aligns storage with the product catalog domain. | Existing data in `properties` needs a migration copy. | Keep the `properties` collection under product code. |
+| Do not keep old `Property` GraphQL aliases. | The implementation follows the product-only plan. | Frontend and external clients must switch operation/type/input names now. | Dual-run old and new operations during a compatibility window. |
+| Use enum spellings exactly as requested. | The plan explicitly specified `MERSEDES` and `ELECTIRIC`. | These spellings may need correction later if product requirements change. | Use corrected values such as `MERCEDES`/`ELECTRIC`. |
+| Keep existing location values under `ProductLocation`. | No new product location list was supplied. | Location values are geographic and may need refinement. | Introduce dealer/location-specific product location enums later. |
 
 ## Known Risks
 
-- The frontend may need to display carshop terminology while still calling `Property` GraphQL operations.
-- The Mongo database name change to `Carlen` creates a new logical database target unless data is copied from `Nestar`.
-- Repo-wide lint and Prettier issues remain outside the safe rename scope.
-- `Property` and `Agent` names are temporarily confusing but intentionally preserved for compatibility.
-- Later domain migration must coordinate backend contracts, frontend query names, and data migration.
+- Frontend GraphQL documents must update from property operations to product operations.
+- The migration script uses fallback values for new required car fields, so migrated data should be reviewed/enriched.
+- Existing likes/views/comments with old `PROPERTY` groups will not automatically appear under `PRODUCT` unless migrated separately.
+- Existing lint and Prettier debt remains outside this migration.

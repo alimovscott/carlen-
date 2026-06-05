@@ -26,7 +26,7 @@ export class NotificationInput {
 	receiverId: string;
 
 	@Field({ nullable: true })
-	propertyId?: string;
+	productId?: string;
 
 	@Field({ nullable: true })
 	articleId?: string;
@@ -80,7 +80,7 @@ export class NotificationObject {
 	receiverId: string;
 
 	@Field({ nullable: true })
-	propertyId?: string;
+	productId?: string;
 
 	@Field({ nullable: true })
 	articleId?: string;

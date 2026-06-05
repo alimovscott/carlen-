@@ -27,9 +27,10 @@ Use those files as the source of truth for AI Agent related migration history, a
 - Keep `MemberType.USER`,`MemberType.AGENT`and `MemberType.ADMIN` unchanged.
 - Product ownership continues to use `MemberType.AGENT` unless a later migration explicitly changes it.
 - Product enum values are:
-  - `productType`: `CHEVROLET`,`HYUNDAI`, `KIA`,`BMW`,`TOYOTA`,`MERSEDES-BENZ`, `RENAULT`
+  - `productType`: `CHEVROLET`,`HYUNDAI`, `KIA`,`BMW`,`TOYOTA`,`MERSEDES`, `RENAULT`
   - `productTransmission`: `AUTOMATIC`, `MANUAL`
   - `productStatus`: `HOLD`,`ACTIVE`,`SOLD`,`DELETE`
+  - `productFuelType`: `DIESEL`,`HYBRID`,`ELECTIRIC`,`LPG`
 
 ## Workflow
 
