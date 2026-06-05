@@ -6,10 +6,10 @@ Carlen is NESTJS Graphl monorepo migrated from Real estate platform into a carsh
 
 Before changing code, read the current AI handoff docs:
 
-- `docs/BACKEND_MIGRATION.md`
-- `docs/DECISIONS.md`
-- `docs/COMPLETED_TASK.md`
-- `docs/NEXT_STEPS.md`
+- `docs/ai/BACKEND_MIGRATION.md`
+- `docs/ai/DECISIONS.md`
+- `docs/ai/COMPLETED_TASK.md`
+- `docs/ai/NEXT_STEPS.md`
 
 Use those files as the source of truth for AI Agent related migration history, accepted decisons, remaining work and validation status.
 
