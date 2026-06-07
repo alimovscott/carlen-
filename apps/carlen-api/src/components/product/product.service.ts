@@ -85,7 +85,9 @@ export class ProductService {
 		if (productStatus === ProductStatus.SOLD) soldAt = moment().toDate();
 		else if (productStatus === ProductStatus.DELETE) deletedAt = moment().toDate();
 
-		const result = await this.productModel.findOneAndUpdate(search, { ...input, soldAt, deletedAt }, { new: true }).exec();
+		const result = await this.productModel
+			.findOneAndUpdate(search, { ...input, soldAt, deletedAt }, { new: true })
+			.exec();
 
 		if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
 
@@ -260,9 +262,13 @@ export class ProductService {
 		else if (productStatus === ProductStatus.DELETE) deletedAt = moment().toDate();
 
 		const result = await this.productModel
-			.findOneAndUpdate(search, { ...input, soldAt, deletedAt }, {
-				new: true,
-			})
+			.findOneAndUpdate(
+				search,
+				{ ...input, soldAt, deletedAt },
+				{
+					new: true,
+				},
+			)
 			.exec();
 
 		if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
