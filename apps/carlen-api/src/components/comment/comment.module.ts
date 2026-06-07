@@ -8,6 +8,7 @@ import { ViewModule } from '../view/view.module';
 import CommentSchema from '../../schemas/Comment.model';
 import { ProductModule } from '../product/product.module';
 import { BoardArticleModule } from '../board-article/board-article.module';
+import { NotificationModule } from '../notification/notification.module';
 
 @Module({
 	imports: [
@@ -22,6 +23,7 @@ import { BoardArticleModule } from '../board-article/board-article.module';
 		ProductModule,
 		BoardArticleModule,
 		ViewModule,
+		NotificationModule,
 	],
 	providers: [CommentResolver, CommentService],
 })

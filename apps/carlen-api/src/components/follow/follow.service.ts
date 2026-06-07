@@ -12,6 +12,7 @@ import {
 	lookupFollowerData,
 	lookupFollowingData,
 } from '../../libs/config';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class FollowService {
@@ -19,6 +20,7 @@ export class FollowService {
 		@InjectModel('Follow')
 		private readonly followModel: Model<Follower | Following>,
 		private readonly memberService: MemberService,
+		private readonly notificationService: NotificationService,
 	) {}
 
 	public async subscribe(followerId: ObjectId, followingId: ObjectId): Promise<Follower> {
@@ -32,6 +34,7 @@ export class FollowService {
 		const result = await this.registerSubscription(followerId, followingId);
 		await this.memberService.memberStatsEditor({ _id: followerId, targetKey: 'memberFollowings', modifier: 1 });
 		await this.memberService.memberStatsEditor({ _id: followingId, targetKey: 'memberFollowers', modifier: 1 });
+		await this.notificationService.notifyFollow(followerId, followingId);
 
 		return result;
 	}

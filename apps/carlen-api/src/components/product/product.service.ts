@@ -21,6 +21,8 @@ import { lookupAuthMemberLiked, lookupMember, shapeIntoMongoObjectId } from '../
 import { LikeService } from '../like/like.service';
 import { LikeInput } from '../../libs/dto/like/like.input';
 import { LikeGroup } from '../../libs/enums/like.enum';
+import { NotificationService } from '../notification/notification.service';
+import { NotificationGroup } from '../../libs/enums/notification.enum';
 
 @Injectable()
 export class ProductService {
@@ -30,6 +32,7 @@ export class ProductService {
 		private memberService: MemberService,
 		private viewService: ViewService,
 		private likeService: LikeService,
+		private notificationService: NotificationService,
 	) {}
 
 	public async createProduct(input: ProductInput): Promise<Product> {
@@ -208,6 +211,9 @@ export class ProductService {
 		const modifier: number = await this.likeService.toggleLike(input);
 		const result = await this.productStatsEditor({ _id: likeRefId, targetKey: 'productLikes', modifier: modifier });
 		if (!result) throw new InternalServerErrorException(Message.SOMETHING_WENT_WRONG);
+		if (modifier === 1) {
+			await this.notificationService.notifyLike(memberId, target.memberId, NotificationGroup.PRODUCT, likeRefId);
+		}
 
 		return result;
 	}

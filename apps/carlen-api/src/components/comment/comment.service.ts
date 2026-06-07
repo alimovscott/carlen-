@@ -11,6 +11,8 @@ import { Comment, Comments } from '../../libs/dto/comment/comment';
 import { CommentUpdate } from '../../libs/dto/comment/comment.update';
 import { lookupMember } from '../../libs/config';
 import { T } from '../../libs/types/common';
+import { NotificationService } from '../notification/notification.service';
+import { NotificationGroup } from '../../libs/enums/notification.enum';
 
 @Injectable()
 export class CommentService {
@@ -19,6 +21,7 @@ export class CommentService {
 		private readonly memberService: MemberService,
 		private readonly productService: ProductService,
 		private readonly boardArticleServise: BoardArticleService,
+		private readonly notificationService: NotificationService,
 	) {}
 
 	public async createComment(memberId: ObjectId, input: CommentInput): Promise<Comment> {
@@ -41,11 +44,19 @@ export class CommentService {
 				});
 				break;
 			case CommentGroup.ARTICLE:
-				await this.boardArticleServise.boardArticleStatsEditor({
+				const targetArticle = await this.boardArticleServise.boardArticleStatsEditor({
 					_id: input.commentRefId,
 					targetKey: 'articleComments',
 					modifier: 1,
 				});
+				if (targetArticle) {
+					await this.notificationService.notifyComment(
+						memberId,
+						targetArticle.memberId,
+						NotificationGroup.ARTICLE,
+						input.commentRefId,
+					);
+				}
 				break;
 			case CommentGroup.MEMBER:
 				await this.memberService.memberStatsEditor({

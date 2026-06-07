@@ -1,5 +1,32 @@
 # Completed Tasks
 
+## Notification Module Session Summary
+
+This session implemented the backend notification module for authenticated member notifications. Notification types are action-only (`LIKE`, `COMMENT`, `FOLLOW`, `VIEW`), while `NotificationGroup` distinguishes `MEMBER`, `PRODUCT`, and `ARTICLE`.
+
+## Notification Work Completed
+
+| Area | Completed Work |
+| --- | --- |
+| Notification module | Added `NotificationModule`, `NotificationService`, and `NotificationResolver`. |
+| GraphQL API | Added authenticated notification list/count/read/read-all/remove operations. |
+| DTOs | Added repo-style notification object, inquiry, and update DTOs. |
+| Mongo schema | Added receiver/date and receiver/status indexes, plus soft-delete status support. |
+| Social integrations | Added notification creation for follow, product like, article like/view/comment. |
+| Socket readiness | Added a notification emit helper stub for later `SocketGateway` integration. |
+| Tests | Added focused notification domain tests for enum, status, collection, and indexes. |
+
+## Notification Validation Status
+
+| Check | Status | Notes |
+| --- | --- | --- |
+| API TypeScript no-emit | Passed | `npx tsc -p apps/carlen-api/tsconfig.app.json --noEmit`. |
+| Batch TypeScript no-emit | Passed | `npx tsc -p apps/carlen-batch/tsconfig.app.json --noEmit`. |
+| Focused notification tests | Passed | `npm test -- notification-domain.spec.ts --runInBand`. |
+| Full build | Passed | `npm run build`. |
+
+---
+
 ## Product Migration Session Summary
 
 This session completed the backend catalog migration from `Property` to `Product` according to the approved Carlen product plan. `MemberType.USER`, `MemberType.AGENT`, and `MemberType.ADMIN` remain unchanged, and product ownership still uses `MemberType.AGENT`.
