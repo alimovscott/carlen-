@@ -1,5 +1,33 @@
 # Completed Tasks
 
+## Frontend Product Contract Migration Session Summary
+
+This session migrated carlen-next from the old Nestar real-estate frontend contract to the Carlen Product backend contract. The public catalog route is now /cars, legacy /property routes redirect to /cars, and the UI keeps the visible seller label Agents.
+
+## Frontend Product Migration Completed
+
+| Area | Completed Work |
+| --- | --- |
+| GraphQL catalog API | Replaced property operations with Product operations and Product fields. |
+| Product types | Added Product enums, inputs, updates, inquiries, and result types matching backend spellings. |
+| Member counters | Replaced frontend memberProperties usage with memberProducts. |
+| Social groups | Updated local comment, like, view, and notification groups from PROPERTY to PRODUCT. |
+| Routes | Added /cars and /cars/detail; preserved /property and /property/detail as query-preserving redirects. |
+| My Page | Migrated add/list/edit inventory flows to Product data and preferred addCar/myCars categories. |
+| Admin | Updated admin catalog list, status update, and removal flows to Product operations. |
+| Branding | Renamed package and visible Nestar branding to Carlen and updated locale catalog labels to car language. |
+
+## Frontend Product Migration Validation Status
+
+| Check | Status | Notes |
+| --- | --- | --- |
+| Frontend build | Passed | yarn build. |
+| Backend-breaking stale search | Passed | No matches for getProperty, createProperty, likeTargetProperty, memberProperties, or CommentGroup.PROPERTY in active frontend source. |
+| Branding stale search | Passed | No Nestar/nestar matches in active frontend source searched. |
+
+---
+
+
 ## Notification Module Session Summary
 
 This session implemented the backend notification module for authenticated member notifications. Notification types are action-only (`LIKE`, `COMMENT`, `FOLLOW`, `VIEW`), while `NotificationGroup` distinguishes `MEMBER`, `PRODUCT`, and `ARTICLE`.
