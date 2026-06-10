@@ -136,6 +136,8 @@ export class ProductService {
 			memberId,
 			locationList,
 			typeList,
+			seatsList,
+			doorsList,
 			transmissionList,
 			fuelTypeList,
 			periodsRange,
@@ -147,6 +149,8 @@ export class ProductService {
 		if (memberId) match.memberId = shapeIntoMongoObjectId(memberId);
 		if (locationList && locationList.length) match.productLocation = { $in: locationList };
 		if (typeList && typeList.length) match.productType = { $in: typeList };
+		if (seatsList && seatsList.length) match.productSeats = { $in: seatsList };
+		if (doorsList && doorsList.length) match.productDoors = { $in: doorsList };
 		if (transmissionList && transmissionList.length) match.productTransmission = { $in: transmissionList };
 		if (fuelTypeList && fuelTypeList.length) match.productFuelType = { $in: fuelTypeList };
 

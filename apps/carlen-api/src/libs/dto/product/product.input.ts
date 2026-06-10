@@ -125,6 +125,14 @@ export class ProductsSearch {
 	typeList?: ProductType[];
 
 	@IsOptional()
+	@Field(() => [Int], { nullable: true })
+	seatsList?: Number[];
+
+	@IsOptional()
+	@Field(() => [Int], { nullable: true })
+	doorsList?: Number[];
+
+	@IsOptional()
 	@Field(() => [ProductTransmission], { nullable: true })
 	transmissionList?: ProductTransmission[];
 
