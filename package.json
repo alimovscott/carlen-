@@ -15,6 +15,7 @@
     "start:prod": "NODE_ENV=production node dist/apps/carlen-api/main",
     "start:prod:batch": "node dist/apps/carlen-batch/main",
     "migrate:properties-to-products": "ts-node scripts/migrate-properties-to-products.ts",
+    "repair:article-comment-counts": "ts-node scripts/repair-article-comment-counts.ts",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",

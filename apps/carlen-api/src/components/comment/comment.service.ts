@@ -73,7 +73,17 @@ export class CommentService {
 
 	public async updateComment(memberId: ObjectId, input: CommentUpdate): Promise<Comment> {
 		const { _id } = input;
-		const result = this.commentModel
+		const previous = await this.commentModel
+			.findOne({
+				_id: _id,
+				memberId: memberId,
+				commentStatus: CommentStatus.ACTIVE,
+			})
+			.exec();
+
+		if (!previous) throw new InternalServerErrorException(Message.UPDATE_FAILED);
+
+		const result = await this.commentModel
 			.findOneAndUpdate(
 				{
 					_id: _id,
@@ -87,7 +97,38 @@ export class CommentService {
 			)
 			.exec();
 		if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
+
+		if (input.commentStatus === CommentStatus.DELETE) {
+			await this.decrementCommentTargetCounter(previous);
+		}
+
 		return result;
+	}
+
+	private async decrementCommentTargetCounter(comment: Comment): Promise<void> {
+		switch (comment.commentGroup) {
+			case CommentGroup.PRODUCT:
+				await this.productService.productStatsEditor({
+					_id: comment.commentRefId,
+					targetKey: 'productComments',
+					modifier: -1,
+				});
+				break;
+			case CommentGroup.ARTICLE:
+				await this.boardArticleServise.boardArticleStatsEditor({
+					_id: comment.commentRefId,
+					targetKey: 'articleComments',
+					modifier: -1,
+				});
+				break;
+			case CommentGroup.MEMBER:
+				await this.memberService.memberStatsEditor({
+					_id: comment.commentRefId,
+					targetKey: 'memberComments',
+					modifier: -1,
+				});
+				break;
+		}
 	}
 
 	public async getComments(memberId: ObjectId, input: CommentsInquiry): Promise<Comments> {

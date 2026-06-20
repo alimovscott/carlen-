@@ -16,6 +16,7 @@ import { LikeGroup } from '../../libs/enums/like.enum';
 import { LikeService } from '../like/like.service';
 import { Follower, Following, MeFollowed } from '../../libs/dto/follow/follow';
 import { lookupAuthMemberLiked } from '../../libs/config';
+import { ProductStatus } from '../../libs/enums/product.enum';
 
 @Injectable()
 export class MemberService {
@@ -143,6 +144,30 @@ export class MemberService {
 						list: [
 							{ $skip: (input.page - 1) * input.limit },
 							{ $limit: input.limit },
+							{
+								$lookup: {
+									from: 'products',
+									let: { agentId: '$_id' },
+									pipeline: [
+										{
+											$match: {
+												$expr: { $eq: ['$memberId', '$$agentId'] },
+												productStatus: ProductStatus.ACTIVE,
+											},
+										},
+										{ $count: 'total' },
+									],
+									as: 'activeProductCounter',
+								},
+							},
+							{
+								$addFields: {
+									activeProducts: {
+										$ifNull: [{ $arrayElemAt: ['$activeProductCounter.total', 0] }, 0],
+									},
+								},
+							},
+							{ $project: { activeProductCounter: 0 } },
 							lookupAuthMemberLiked(memberId, '$_id'),
 						],
 						metaCounter: [{ $count: 'total' }],
