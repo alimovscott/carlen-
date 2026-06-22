@@ -449,3 +449,24 @@ This session redesigned the admin products page (`pages/_admin/properties/index.
 | Dev smoke | Passed | `yarn dev -H 127.0.0.1 -p 3011`; `/_admin/properties` returned 200 and compiled with no real errors (`/`, `/cars` also 200). Only benign `.next/cache` PackFileCache restore warnings appeared (stale disk cache, not from this change). |
 | Authenticated runtime | Not exercised | `/_admin/properties` is admin-role gated; rendered admin content + tab/filter/pagination/status/delete flows require an admin session (logic untouched, so behavior preserved). |
 | No backend / scope | Passed | Only the products page, its list component, and a new scoped SCSS file changed; shared admin shell and other admin pages untouched. |
+
+---
+
+## Carlen i18n V1 (en/ko/ru)
+
+Implemented the first production i18n pass for the Carlen frontend using Next.js Pages Router and next-i18next. The Korean locale was migrated from kr to standard ko; the existing langkr.png remains as the Korean flag asset only. No GraphQL operations, backend code, Apollo logic, route structure, or business logic were changed.
+
+| Area | Completed Work |
+| --- | --- |
+| Locale config | Updated next-i18next.config.js to en, ko, ru with en default and locale detection disabled. |
+| Translation resources | Added/expanded matching common.json resources for en, ko, ru; removed the old public/locales/kr resource. |
+| Language switcher | Updated Top.tsx to use router.push(router.asPath, router.asPath, { locale }), keep active state from router.locale, persist to localStorage, and map ko to the existing Korean flag file. |
+| UI migration | Moved visible copy in Header/Navbar, homepage, cars list/detail, agents list/detail, community list/detail/editor, login/register, and mypage flows to the common namespace. |
+| Type/build hygiene | Fixed the existing Events undefined return and excluded non-app SKILLS examples from tsconfig so repo checks cover the application source. |
+
+| Check | Status | Notes |
+| --- | --- | --- |
+| Translation key audit | Passed | All translation keys used under pages and libs/components exist in en, ko, and ru. |
+| Old kr locale id audit | Passed | No old kr locale list, id="kr", or data-locale="kr" remains; only intentional flag/migration mapping references remain in Top.tsx. |
+| Typecheck | Passed | yarn tsc --noEmit --pretty false --skipLibCheck true. |
+| Production build | Passed | yarn build completed successfully. |

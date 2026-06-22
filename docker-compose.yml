@@ -1,0 +1,38 @@
+version: '3.3'
+
+services:
+  carlen-api:
+    container_name: carlen-api
+    restart: always
+    image: node:20.10.0
+    ports:
+      - 4001:3007
+    volumes:
+      - ./:/usr/src/carlen
+    working_dir: /usr/src/carlen
+
+    networks:
+      - monorepo-network
+
+    # production
+    command: bash -c "npm install && npm run build && npm run start:prod "
+
+  carlen-batch:
+    container_name: carlen-batch
+    restart: unless-stopped
+    image: node:20.10.0
+    ports:
+      - 4002:3008
+    volumes:
+      - ./:/usr/src/carlen
+    working_dir: /usr/src/carlen
+
+    networks:
+      - monorepo-network
+
+    # production
+    command: bash -c "npm install && npx nest build carlen-batch && npm run start:prod:batch"
+
+networks:
+  monorepo-network:
+    driver: bridge
